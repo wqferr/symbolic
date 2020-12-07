@@ -36,42 +36,42 @@ function const.isint(arg)
 end
 
 function const:unm()
-    return const.new(-self.value)
+    return const.new(-const.asnum(self))
 end
 const_meta.__unm = const.unm
 
 function const:add(other)
-    return const.new(self.value + const.asnum(other))
+    return const.new(const.asnum(self) + const.asnum(other))
 end
 const_meta.__add = const.add
 
 function const:sub(other)
-    return const.new(self.value - const.asnum(other))
+    return const.new(const.asnum(self) - const.asnum(other))
 end
 const_meta.__sub = const.sub
 
 function const:mul(other)
-    return const.new(self.value * const.asnum(other))
+    return const.new(const.asnum(self) * const.asnum(other))
 end
 const_meta.__mul = const.mul
 
 function const:div(other)
-    return const.new(self.value / const.asnum(other))
+    return const.new(const.asnum(self) / const.asnum(other))
 end
 const_meta.__div = const.div
 
 function const:mod(other)
-    return const.new(self.value % const.asnum(other))
+    return const.new(const.asnum(self) % const.asnum(other))
 end
 const_meta.__mod = const.mod
 
 function const:pow(other)
-    return const.new(self.value ^ const.asnum(other))
+    return const.new(const.asnum(self) ^ const.asnum(other))
 end
 const_meta.__pow = const.pow
 
 function const:eq(other)
-    return self.value == const.asnum(other)
+    return const.asnum(self) == const.asnum(other)
 end
 const_meta.__eq = const.eq
 
