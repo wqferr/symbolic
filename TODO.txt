@@ -1,0 +1,2 @@
+[ ] Write stuff in moonscript instead of pure lua?
+[ ] Create unit tests with busted

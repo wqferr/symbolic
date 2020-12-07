@@ -1,33 +1,30 @@
 local const = {}
 local const_meta = {__index = const}
 
-function const.new(value)
-    local v = tonumber(value)
-    assert(type(v) == "number", "Value must be a number")
+function const.new(arg)
+    local value
+    if type(arg) == "number" then
+        value = arg
+    elseif type(arg) == "table" or type(arg) == "userdata" then
+        value = arg.value
+    else
+        error("Can only coerce from numbers or tables/userdata with `value` key", 2)
+    end
 
-    local c = {value = v}
+    value = tonumber(value)
+    assert(value, "Value must be a number")
+
+    local c = {value = value}
     setmetatable(c, const_meta)
     return c
-end
-
-function const.asconst(arg)
-    if type(arg) == "number" then
-        return const.new(arg)
-    elseif type(arg) == "table" or type(arg) == "userdata" then
-        return const.new(arg.value)
-    else
-        error("Can only coerce from numbers or tables/userdata with `value` key")
-    end
 end
 
 function const.asnum(arg)
     if type(arg) == "number" then
         return arg
     elseif type(arg) == "table" or type(arg) == "userdata" then
-        assert(arg.value ~= nil, "Object has no `value` key")
-
         local v = tonumber(arg.value)
-        assert(v ~= nil, "Object has a non-number value stored in the `value` key")
+        assert(v, "Object has a non-number value stored in the `value` key")
         return v
     else
         error("Can only coerce from numbers or tables/userdata with `value` key")
@@ -72,6 +69,13 @@ function const:pow(other)
     return const.new(self.value ^ const.asnum(other))
 end
 const_meta.__pow = const.pow
+
+function const:eq(other)
+    return self.value == const.asnum(other)
+end
+const_meta.__eq = const.eq
+
+-- TODO other comparisons
 
 const.float_fmt = "const<%.2f>"
 const.int_fmt = "const<%d>"
